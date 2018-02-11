@@ -1,8 +1,13 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+var morgan = require('morgan')
 
 app.use(bodyParser.json())
+
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+
 
 let persons = [
     {
@@ -31,16 +36,6 @@ let persons = [
     res.json(persons)
   })
 
-  /*
-  const Info = () => {
-    return(
-    <div>
-    <p>Puhelinluettelossa on {persons.length} henkilön tiedot</p>
-    <p>{new Date()}</p>
-    </div>
-    )
-    }
-*/
 app.get('/api/info', (request, response) => {
     response.send(`<div><p>Puhelinluettelossa on ${persons.length} henkilön tiedot</p><p>${new Date()}</p></div>`)    
 })
