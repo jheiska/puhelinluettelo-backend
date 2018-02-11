@@ -62,6 +62,29 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
+const generateId = () => {
+    return (
+        Math.floor(Math.random() * 500)
+    )}
+
+app.post('/api/persons/', (request, response) => {
+    const body = request.body
+
+    if (body.name === undefined) {
+        return response.status(400).json({error: 'name missing'})
+    }
+
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId()
+    }
+
+    persons = persons.concat(person)
+
+    response.json(person)
+})
+
 
 const port = 3001
 app.listen(port)
