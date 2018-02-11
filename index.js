@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.json())
 
 let persons = [
     {
@@ -19,15 +22,28 @@ let persons = [
     },
     {
       "name": "Lea Kutvonen",
-      "number": "040-555666",
+      "number": "040-555444",
       "id": 4
     },
-    
-  ]
+    ]
 
   app.get('/api/persons', (req, res) => {
     res.json(persons)
   })
+
+  /*
+  const Info = () => {
+    return(
+    <div>
+    <p>Puhelinluettelossa on {persons.length} henkilön tiedot</p>
+    <p>{new Date()}</p>
+    </div>
+    )
+    }
+*/
+  app.get('/api/info', (request, response) => {
+    response.send(`<div><p>Puhelinluettelossa on ${persons.length} henkilön tiedot</p><p>${new Date()}</p></div>`)    
+    })
 
 const port = 3001
 app.listen(port)
