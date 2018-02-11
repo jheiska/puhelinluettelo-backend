@@ -5,9 +5,11 @@ var morgan = require('morgan')
 
 app.use(bodyParser.json())
 
+// Tehtävä 3.8 JOS ON AIKAA!
+//morgan.token('data', function (req, res) { return req.headers['content-type'] })
+//app.use(morgan(':method :url :status :data :res[content-length] - :response-time ms'))
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
-
+app.use(morgan('tiny'))
 
 let persons = [
     {
@@ -32,7 +34,7 @@ let persons = [
     },
     ]
 
-  app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (req, res) => {
     res.json(persons)
   })
 
