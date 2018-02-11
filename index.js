@@ -41,9 +41,27 @@ let persons = [
     )
     }
 */
-  app.get('/api/info', (request, response) => {
+app.get('/api/info', (request, response) => {
     response.send(`<div><p>Puhelinluettelossa on ${persons.length} henkilön tiedot</p><p>${new Date()}</p></div>`)    
-    })
+})
+
+app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const person = persons.find(person => person.id === id )
+    if ( person ) {
+      response.json(person)
+    } else {
+      response.status(404).end()
+    }
+  })
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(person => person.id !== id)
+
+    response.status(204).end()
+})
+
 
 const port = 3001
 app.listen(port)
