@@ -64,14 +64,20 @@ app.delete('/api/persons/:id', (request, response) => {
 
 const generateId = () => {
     return (
-        Math.floor(Math.random() * 500)
+        Math.floor(Math.random() * 999999)
     )}
 
 app.post('/api/persons/', (request, response) => {
     const body = request.body
-
+    const found = persons.find(person => person.name === body.name )
     if (body.name === undefined) {
         return response.status(400).json({error: 'name missing'})
+    }
+    if (body.number === undefined) {
+        return response.status(400).json({error: 'number missing'})
+    }
+    if (found === undefined) {
+        return response.status(400).json({error: 'name already exists'})
     }
 
     const person = {
