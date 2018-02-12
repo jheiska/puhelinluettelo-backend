@@ -1,15 +1,16 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-var morgan = require('morgan')
+const morgan = require('morgan')
+const cors = require('cors')
 
+app.use(cors())
 app.use(bodyParser.json())
-
 // Tehtävä 3.8 JOS ON AIKAA!
-//morgan.token('data', function (req, res) { return req.headers['content-type'] })
-//app.use(morgan(':method :url :status :data :res[content-length] - :response-time ms'))
+morgan.token('vastaus', function (request, response) { return JSON.stringify(response.body) })
+app.use(morgan(':method :url :status :vastaus :res[content-length] - :response-time ms'))
 
-app.use(morgan('tiny'))
+//app.use(morgan('tiny'))
 
 let persons = [
     {
@@ -35,7 +36,7 @@ let persons = [
     ]
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    res.json(persons)   
   })
 
 app.get('/api/info', (request, response) => {
@@ -66,6 +67,7 @@ const generateId = () => {
 
 app.post('/api/persons/', (request, response) => {
     const body = request.body
+    console.log(request.body)
     const found = persons.find(person => person.name === body.name )
     if (body.name === undefined) {
         return response.status(400).json({error: 'name missing'})
@@ -89,6 +91,7 @@ app.post('/api/persons/', (request, response) => {
 })
 
 
-const port = 3001
-app.listen(port)
-console.log(`Server running on port ${port}`)
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
