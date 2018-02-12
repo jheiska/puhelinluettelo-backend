@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 // Tehtävä 3.8 JOS ON AIKAA!
