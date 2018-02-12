@@ -1,7 +1,7 @@
-POST https://glacial-fortress-70217.herokuapp.com/api/persons
+POST http://localhost:3001/api/persons
 content-Type: application/json
 
 {
-    "name": "Joka Nimi",
-    "number": "045-6789012",
+    "name": "Jokan Nimi",
+    "number": "045-6789012"
 }

@@ -4,27 +4,15 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const Person = require('./models/person')
 
 app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 morgan.token('vastaus', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :vastaus :res[content-length] - :response-time ms'))
-//app.use(morgan('tiny'))
 
-/*
-const url = 'mongodb://juuseri:database@ds233218.mlab.com:33218/heroku_h2x98943'
-mongoose.connect(url)
 
-const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
-    id: Number
-  })
-  
-const Person = mongoose.model('Person', personSchema);
-
-*/
 let persons = [
     {
       "name": "Arto Hellas",
@@ -49,7 +37,11 @@ let persons = [
     ]
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)   
+    Person
+        .find({})
+        .then(persons => {
+            response.json(persons.map(formatPerson))
+        })
   })
 
 app.get('/api/info', (request, response) => {
@@ -57,13 +49,11 @@ app.get('/api/info', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id )
-    if ( person ) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
+    Person
+        .findById(request.params.id)
+        .then(person => {
+            Response.json(formatPerson(person))
+        })
   })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -79,8 +69,8 @@ const generateId = () => {
     )}
 
 app.post('/api/persons/', (request, response) => {
-//    console.log(JSON.stringify(request.body))
     const body = request.body
+
     const found = persons.find(person => person.name === body.name )
     if (body.name === undefined) {
         return response.status(400).json({error: 'name missing'})
@@ -88,19 +78,22 @@ app.post('/api/persons/', (request, response) => {
     if (body.number === undefined) {
         return response.status(400).json({error: 'number missing'})
     }
+    /*
     if (found === undefined) {
         return response.status(400).json({error: 'name already exists'})
     }
-
-    const person = {
+    */
+    const person = new Person({
         name: body.name,
         number: body.number,
         id: generateId()
-    }
-
-    persons = persons.concat(person)
-
-    response.json(person)
+    })
+    
+    person
+        .save()
+        .then(savedPerson => {
+            response.json(formatPerson(savedPerson))
+        })
 })
 
 
