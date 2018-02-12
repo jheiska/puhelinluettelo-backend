@@ -2,7 +2,6 @@ POST https://glacial-fortress-70217.herokuapp.com/api/persons
 content-Type: application/json
 
 {
-    "name": "Joku Nimi",
+    "name": "Joka Nimi",
     "number": "045-6789012",
-    "id": 666
 }

@@ -3,16 +3,28 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
 
 app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
-// Tehtävä 3.8 JOS ON AIKAA!
-morgan.token('vastaus', function (request, response) { return JSON.stringify(response.body) })
+morgan.token('vastaus', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :vastaus :res[content-length] - :response-time ms'))
-
 //app.use(morgan('tiny'))
 
+/*
+const url = 'mongodb://juuseri:database@ds233218.mlab.com:33218/heroku_h2x98943'
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+    name: String,
+    number: String,
+    id: Number
+  })
+  
+const Person = mongoose.model('Person', personSchema);
+
+*/
 let persons = [
     {
       "name": "Arto Hellas",
@@ -36,8 +48,8 @@ let persons = [
     },
     ]
 
-app.get('/api/persons', (req, res) => {
-    res.json(persons)   
+app.get('/api/persons', (request, response) => {
+    response.json(persons)   
   })
 
 app.get('/api/info', (request, response) => {
@@ -67,8 +79,8 @@ const generateId = () => {
     )}
 
 app.post('/api/persons/', (request, response) => {
+//    console.log(JSON.stringify(request.body))
     const body = request.body
-    console.log(request.body)
     const found = persons.find(person => person.name === body.name )
     if (body.name === undefined) {
         return response.status(400).json({error: 'name missing'})
