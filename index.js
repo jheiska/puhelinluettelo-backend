@@ -5,11 +5,11 @@ const morgan = require('morgan')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const Person = require('./models/person')
-const mongoose = require('mongoose')
 
+/*
 const url = 'mongodb://juuseri:database@ds233218.mlab.com:33218/heroku_h2x98943'
 mongoose.connect(url)
-
+*/
 app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
@@ -45,7 +45,7 @@ app.get('/api/persons', (request, response) => {
     Person
         .find({})
         .then(persons => {
-            response.json(persons.map(formatPerson))
+            response.json(persons)
         })
   })
 
