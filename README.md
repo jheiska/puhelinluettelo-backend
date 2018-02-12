@@ -1,2 +1,4 @@
 # puhelinluettelo-backend
-Full Stack -kurssin 3-osan tehtävät
+Puhelinluettelon backend
+
+https://glacial-fortress-70217.herokuapp.com/
