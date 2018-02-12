@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const url = 'mongodb://juuseri:database@ds233218.mlab.com:33218/heroku_h2x98943'
+const url = 'mongodb://data:data@ds233218.mlab.com:33218/heroku_h2x98943'
 
 mongoose.connect(url)
 
